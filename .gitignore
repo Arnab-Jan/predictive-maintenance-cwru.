@@ -1,0 +1,14 @@
+# Virtual Environments
+venv/
+.venv/
+
+# Python Cache
+__pycache__/
+*.py[cod]
+
+# Large Raw Data Files & Models
+data/raw/*.mat
+*.pkl
+
+# OS Configuration
+.DS_Store
