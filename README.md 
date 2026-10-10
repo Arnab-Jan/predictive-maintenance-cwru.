@@ -1,0 +1,37 @@
+# End-to-End Bearing Fault Predictive Maintenance System
+
+An industrial-grade predictive maintenance pipeline for drive-end bearing fault diagnostics using 48 kHz vibration signals from the Case Western Reserve University (CWRU) dataset.
+
+## Key Features & Engineering Rigor
+- **Leak-Free Signal Segmentation:** 2,048-sample sliding windowing (50% overlap) grouped via `GroupShuffleSplit` across contiguous 10-window blocks to eliminate temporal data leakage.
+- **14 Diagnostic Features:** 
+  - *Time-Domain:* RMS, Kurtosis, Skewness, Crest Factor, Form Factor, Max, Min, Mean, Std Dev.
+  - *Frequency-Domain:* Spectral Centroid, Spectral Spread, Peak Frequency, Low/High Spectral Energies via Hann-windowed RFFT.
+- **Imbalance Mitigation:** Simulates real-world factory fault rarity (10:1 normal-to-fault ratio) using class-weighted Random Forest classification.
+- **Explainability & Web Dashboard:** SHAP feature importance analysis paired with an interactive Streamlit diagnostic dashboard.
+
+## Project Structure
+predictive-maintenance-cwru/
+├── data/raw/              # Raw CWRU .mat files (ignored by git)
+├── src/
+│   ├── feature_extraction.py  # Time and frequency domain signal engine
+│   ├── dataset_loader.py     # Leak-free windowing & imbalance simulation
+│   ├── train.py               # Random Forest model training & evaluation
+│   └── explainability.py      # SHAP feature importance analysis
+├── app.py                     # Interactive Streamlit dashboard
+├── bearing_fault_rf_model.pkl # Trained model binary
+└── requirements.txt           # Environment dependencies
+
+## How to Run
+
+1. **Activate Virtual Environment & Install Dependencies:**
+   ```bash
+   source venv/bin/activate
+   pip install -r requirements.txt
+Download Raw Data:
+
+python3 download_data.py
+Train Model:
+python3 -m src.train
+Launch Streamlit Web App:
+streamlit run app.py
